@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@font-face{
+  font-family:'Patrick Hand';
+  src:url('./asset//font/PatrickHand-Regular.ttf') format('truetype');
+}
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #e9e9e9;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.wrapper-class {
+  max-width: 100%; /* Ubah nilai sesuai kebutuhan */
+  margin: 0 auto; /* Untuk membuat editor berada di tengah halaman */
+  background-color: white;
+  border-radius: 10px 10px;
+}
+.ql-snow .ql-picker.ql-size {
+  width: 80px;
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item::before {
+  content: 'Size';
+  font-size: 12px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+}
+
+.ql-snow .ql-picker.ql-font {
+  width: 110px;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item::before {
+  content: 'Font';
+  font-size: 12px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+}
+
+.bg-dark{
+  background: rgb(22,33,62);
+  background: linear-gradient(355deg, rgba(22,33,62,1) 0%, rgba(55,65,81,1) 79%);
+}

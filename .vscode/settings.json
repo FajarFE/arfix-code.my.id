@@ -1,0 +1,9 @@
+{
+    "prettier.useTabs": false,
+    "prettier.vueIndentScriptAndStyle": true,
+    "prettier.withNodeModules": true,
+    "prettier.resolveGlobalModules": true,
+    "prettier.proseWrap": "always",
+    "prettier.jsxSingleQuote": true,
+    "prettier.enableDebugLogs": true
+}

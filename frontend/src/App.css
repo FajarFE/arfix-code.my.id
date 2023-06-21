@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.active{
+  z-index: 999;
+}
+
+
+@import url('https://fonts.googleapis.com/css?family=Consolas');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&display=swap');
+
+.fil4 {
+  fill: #4D616E;
+  transform: translate(-50%, -50%);
+}
+
+.fil0 {
+  fill: #56B3B4;
+  transform: translate(-50%, -50%);
+}
+
+.fil5 {
+  fill: #BF85BF;
+  transform: translate(-50%, -50%);
+}
+
+.fil2 {
+  fill: #EA5E5E;
+  transform: translate(-50%, -50%);
+}
+
+.fil3 {
+  fill: #EA5E5E;
+  transform: translate(-50%, -50%);
+}
+
+.fil1 {
+  fill: #F7BA3E;
+  transform: translate(-50%, -50%);
+}
+
+.fil8 {
+  fill: #199C9E;
+  fill-rule: nonzero;
+  transform: translate(-50%, -50%);
+}
+
+.fil7 {
+  fill: #BF85BF;
+  fill-rule: nonzero;
+  transform: translate(-50%, -50%);
+}
+
+.fil6 {
+  fill: #EA5E5E;
+  fill-rule: nonzero;
+  transform: translate(-50%, -50%);
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
