@@ -1,4 +1,4 @@
-<h2>[ARFIX-CODE](https://arfix-code.my.id)</h2>
+<h2><a href="https://arfix-code.my.id">ARFIX CODE</a></h2>
 
 
 
