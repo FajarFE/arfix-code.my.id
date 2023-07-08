@@ -19,6 +19,7 @@ const FormArtikel = () => {
   const editor = useRef(null);
   const [content, setContent] = useState("");
   const [originalImages, setOriginalImages] = useState([]);
+  const baseURL = `${window.location.protocol}//${window.location.hostname}:8000`;
   const handleDrop = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -79,7 +80,7 @@ const FormArtikel = () => {
     formData.append("user_id", userId); // Menyertakan user_id dalam formData
 
     axios
-      .post("http://localhost:8000/api/posts", formData, {
+      .post(`${baseURL}/api/posts`, formData, {
         headers: {
           Authorization: `Bearer ${userToken}`,
         },
@@ -126,7 +127,7 @@ const FormArtikel = () => {
     async function fetchData() {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:8000/api/tipe");
+        const response = await axios.get(`${baseURL}/api/tipe`);
         if (response.data && response.data.success && response.data.data) {
           setTipe(response.data.data);
         }
@@ -145,7 +146,7 @@ const FormArtikel = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          "http://localhost:8000/api/categories"
+         ` ${baseURL}/api/categories`
         );
         if (response.data && response.data.success && response.data.data) {
           setCategories(response.data.data);

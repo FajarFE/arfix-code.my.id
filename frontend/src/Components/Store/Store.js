@@ -3,6 +3,7 @@ import PostReducer from './PostsSlice';
 import CategoryReducer from './CategorySlice';
 import AuthSlice from "./AuthSlice";
 import HeadlineReducer from "./HeadlineSlice";
+import ShowSlice from "./ShowNavbar";
 
 const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
         category: CategoryReducer,
         auth: AuthSlice,
         headline: HeadlineReducer,
+        show: ShowSlice,
     },
 });
 

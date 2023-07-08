@@ -17,6 +17,7 @@ const CategoryPages = () => {
   const status_id = 2; // Ganti dengan status_id yang diinginkan
   const {searchTerm} = useParams();
   const [searchData,setSearchData] = useState([]);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {

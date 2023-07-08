@@ -8,5 +8,7 @@ import Facebook from './facebook.svg';
 import Twitter from './twitter.svg';
 import Github from './github.svg';
 import Logo from './Logo.png'; // Nama file Logo menggunakan huruf kapital (.png)
+import Linkedin from './linkedin.svg';
+import Website from './website.svg';
 
-export { frontend, backend, fullstack, RegisterPNG, LoginPNG, Instagram, Facebook, Twitter, Github, Logo };
+export {Website,Linkedin, frontend, backend, fullstack, RegisterPNG, LoginPNG, Instagram, Facebook, Twitter, Github, Logo };

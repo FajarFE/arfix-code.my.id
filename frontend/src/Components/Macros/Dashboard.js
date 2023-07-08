@@ -10,6 +10,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [user, setUser] = React.useState({});
+  const baseURL = `${window.location.protocol}//${window.location.hostname}:8000`;
 
   useEffect(() => {
     fetchData();
@@ -17,7 +18,7 @@ const Dashboard = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/user", {
+      const response = await axios.get(`${baseURL}/api/user`, {
         headers: {
           Authorization: `Bearer ${token}`, // Set header Authorization dengan token JWT
         },
@@ -51,7 +52,7 @@ const Dashboard = () => {
         handleTokenExpired(); // Memproses jika token JWT kadaluarsa
       }
 
-      await axios.get("http://localhost:8000/api/user", {
+      await axios.get(`${baseURL}/api/user`, {
         headers: {
           Authorization: `Bearer ${token}`, // Set header Authorization dengan token JWT
         },

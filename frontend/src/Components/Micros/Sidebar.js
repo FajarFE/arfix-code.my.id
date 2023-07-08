@@ -8,6 +8,7 @@ const Sidebar =({ user, logout })=>{
     const [profile, setProfile] = useState(null);
     const [error, setError] = useState("");
     const [avatar, setAvatar] = useState(user.avatar);
+    const baseURL = `${window.location.protocol}//${window.location.hostname}:8000`;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,7 +19,7 @@ const Sidebar =({ user, logout })=>{
         }
         try {
           const response = await axios.post(
-            `http://localhost:8000/api/update/${user.Id}?_method=PUT`,
+            `${baseURL}/api/update/${user.Id}?_method=PUT`,
             formData,
             {
               headers: {

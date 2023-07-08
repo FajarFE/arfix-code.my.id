@@ -24,13 +24,14 @@ const FormArtikel = () => {
   const [error, setError] = useState("");
   const [originalImages, setOriginalImages] = useState([]);
   const [paths, setPaths] = useState([]);
+  const baseURL = `${window.location.protocol}//${window.location.hostname}:8000`;
 
   useEffect(() => {
     const fetchPost = async () => {
       const token = localStorage.getItem("token");
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/posts/${id}`,
+          `${baseURL}/api/posts/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -114,7 +115,7 @@ const FormArtikel = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/posts/${id}?_method=PUT`,
+        `${baseURL}/api/posts/${id}?_method=PUT`,
         formData,
         {
           headers: {
@@ -164,7 +165,7 @@ const FormArtikel = () => {
     async function fetchData() {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:8000/api/tipe");
+        const response = await axios.get(`${baseURL}/api/tipe`);
         if (response.data && response.data.success && response.data.data) {
           setTipe(response.data.data);
         }
@@ -184,7 +185,7 @@ const FormArtikel = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          "http://localhost:8000/api/categories"
+          `${baseURL}/api/categories`
         );
         if (response.data && response.data.success && response.data.data) {
           setCategories(response.data.data);

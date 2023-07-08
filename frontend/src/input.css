@@ -5,6 +5,11 @@
   font-family:'Patrick Hand';
   src:url('./asset//font/PatrickHand-Regular.ttf') format('truetype');
 }
+
+@font-face {
+  font-family:'Poopins' ;
+  src: url('./asset/font/PatrickHand-Regular.ttf') format('truetype');
+}
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;

@@ -25,12 +25,11 @@ const App = () => {
 
       <Routes>
       <Route path="/search/:searchTerm" element={<Searching/>}/>
-
       <Route path='/:title/:id' element={<NextPage/>}/> 
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-  
+      <Route path="/:name/:id/:tipe_name" element={<CategoryPage/>}/>  
         <Route
           path="/dashboard"
           element={
@@ -42,7 +41,6 @@ const App = () => {
           <Route path=":id/edit" element={<EditArtikel />} />
           <Route path=":name" element={<EditUser/>}/>
         </Route>
-        <Route path="/:name/:id" element={<CategoryPage/>}/>  
       </Routes>
 </Provider>
   

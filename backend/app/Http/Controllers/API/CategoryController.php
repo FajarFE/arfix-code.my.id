@@ -20,13 +20,17 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::join('tipe', 'categories.tipe_id', '=', 'tipe.id')
+            ->select('categories.*', 'tipe.name as tipe_name')
+            ->get();
+
         return response()->json([
             'success' => true,
             'message' => 'List Data Posts',
             'data' => $categories
         ]);
     }
+
 
     public function tampil_tipe($tipe_id)
     {

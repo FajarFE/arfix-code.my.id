@@ -15,11 +15,12 @@ export default function EditUser() {
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [isEdit, setIsEdit] = useState(true);
   const [error, setError] = useState("");
+  const baseURL = `${window.location.protocol}//${window.location.hostname}:8000`;
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:8000/api/user", {
+        const response = await axios.get(`${baseURL}/api/user`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -60,7 +61,7 @@ export default function EditUser() {
 
     try {
       const response = await axios.post(
-        `http://localhost:8000/api/update/${id}?_method=PUT`,
+        `${baseURL}2/api/update/${id}?_method=PUT`,
         formData,
         {
           headers: {

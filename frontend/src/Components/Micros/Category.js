@@ -6,6 +6,7 @@ export default function Category  (props) {
   const [previewImages, setPreviewImages ] = useState([]);
   const [name, setName] = useState('');
   const [tipe, setTipe] = useState('');
+  const baseURL = `${window.location.protocol}//${window.location.hostname}:8000`;
    
   const handleFileChange = (event) => {
     const fileList = Array.from(event.target.files);
@@ -49,7 +50,7 @@ export default function Category  (props) {
     formData.append('tipe_id', tipe);
     
     try {
-      const response = await axios.post('http://localhost:8000/api/categories', formData, {
+      const response = await axios.post(`${baseURL}/api/categories`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'

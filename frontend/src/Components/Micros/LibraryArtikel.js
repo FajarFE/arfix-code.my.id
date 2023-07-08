@@ -31,6 +31,7 @@ function Detail() {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const { isOpen, toggleMenu } = Hookopen();
+  const baseURL = `${window.location.protocol}//${window.location.hostname}:8000`;
 
   useEffect(() => {
     // Ambil data posting dari backend saat komponen dimuat
@@ -168,7 +169,7 @@ function Detail() {
       setLoading(true);
       await Promise.all(
         selectedPosts.map(async (postId) => {
-          await axios.delete(`http://localhost:8000/api/posts/${postId}`, {
+          await axios.delete(`${baseURL}/api/posts/${postId}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
         })
@@ -349,12 +350,12 @@ function Detail() {
                                                 )}
                                                 {show == index && (
                                                     <div className="dropdown-content bg-white shadow w-24 absolute z-30 right-0 -mr-[16px] ">
-                                                        <div className="text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
+                                                        <a href={`${item.id}/edit`} className="text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
                                                             <p>Edit</p>
-                                                        </div>
-                                                        <div className="text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
+                                                        </a>
+                                                        <button onClick={handleDelete} className="text-xs w-full hover:bg-indigo-700 py-4 px-4 cursor-pointer hover:text-white">
                                                             <p>Delete</p>
-                                                        </div>
+                                                        </button>
                                                     </div>
                                                 )}
                                             </div>

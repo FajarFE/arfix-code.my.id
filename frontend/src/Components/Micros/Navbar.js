@@ -5,18 +5,19 @@ import { Link,useParams } from 'react-router-dom';
 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategory } from "../Store/CategorySlice";
+import { setShow } from "../Store/ShowNavbar";
 
 
-const Navbar = () => {
+const Navbar = ({isOpen}) => {
   const dispatch = useDispatch();
   const { data: category, loading, error } = useSelector((state) => state.category);
+  const {show} = useSelector((state) => state.show);
   const [openFrontend, setopenFrontend] = React.useState(false);
   const [openBackend, setopenBackend] = React.useState(false);
   const [openFullstack, setopenFullstack] = React.useState(false);
   const [isFront, setIsFront] = React.useState([]);
   const [isBack, setIsBack] = React.useState([]);
   const [isFull, setIsFull] = React.useState([]);
-  const [isOpen, setIsOpen] = React.useState(false);
   const [isHovered, setIsHovered] = React.useState(false);
   const {name} = useParams();
 
@@ -76,23 +77,22 @@ const Navbar = () => {
   };
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    dispatch(setShow(!show));
   }
   return (
     <>
-    <nav className="font-patrick">
+    <nav className="font-patrick ">
   <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    <div className="relative flex h-16 items-center justify-between h-[100px]">
+    <div className="relative flex h-16 items-start justify-between h-[100px] py-2 ">
       <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-
         <button type="button" className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white" aria-controls="mobile-menu" aria-expanded="false" onClick={toggleMenu}>
-          {isOpen ? (
+          {show ? (
           <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g id="Menu / Close_MD">
-            <path id="Vector" d="M18 18L12 12M12 12L6 6M12 12L18 6M12 12L6 18" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path id="Vector" d="M18 18L12 12M12 12L6 6M12 12L18 6M12 12L6 18" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </g>
         </svg> ):( <svg className="w-6 h-6" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-        <g fill="#2e3436">
+        <g fill="#ffffff">
           <path d="m 1 2 h 14 v 2 h -14 z m 0 0"/>
           <path d="m 1 7 h 14 v 2 h -14 z m 0 0"/>
           <path d="m 1 12 h 14 v 2 h -14 z m 0 0"/>
@@ -100,10 +100,9 @@ const Navbar = () => {
       </svg> )}
         </button>
       </div>
-      <div className="flex flex-1 items-center justify-center sm:items-center sm:justify-between">
-        
-        <div className="flex flex-shrink-0 items-center">
-          
+      <div className="flex h-auto  w-full items-center gap-2 md:flex-col lg:flex-row justify-center sm:items-center sm:justify-between">
+        <div className="flex justify-between items-center">
+        <div className="flex flex-shrink-0 justify-center items-center">
           <img className="block h-20 w-auto lg:hidden" src={Logo} alt="Your Company"/>
           <img className="hidden h-20 w-auto lg:block" src={Logo} alt="Your Company"/>
         </div>
@@ -136,6 +135,10 @@ const Navbar = () => {
           </div>
           
         </div>
+
+        </div>
+        <div className="flex justify-between items-center gap-10">
+
         <form onSubmit={handleSubmit} className="hidden sm:ml-6 sm:block items-center relative flex justify-center">
             <button
             type="submit"
@@ -170,100 +173,16 @@ const Navbar = () => {
 
         </Link>
         </div>
+        </div>
       </div>
      
     </div>
   </div>
 
-{isOpen && (
-  <div class="sm:hidden bg-" id="mobile-menu">
-  <div class="space-y-1 px-2 pb-3 pt-2 flex flex-col">
-    <button className="items-center flex justify-center " onClick={toggleMenuFrontend}>
-    <a href="#" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Dashboard</a>
-    {openFrontend ? (<svg className="transform rotate-180" fill="#000000" width="20px" height="20px" viewBox="-6.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
-
-<path d="M18.813 11.406l-7.906 9.906c-0.75 0.906-1.906 0.906-2.625 0l-7.906-9.906c-0.75-0.938-0.375-1.656 0.781-1.656h16.875c1.188 0 1.531 0.719 0.781 1.656z"></path>
-</svg>):(<svg fill="#000000" width="20px" height="20px" viewBox="-6.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
-
-<path d="M18.813 11.406l-7.906 9.906c-0.75 0.906-1.906 0.906-2.625 0l-7.906-9.906c-0.75-0.938-0.375-1.656 0.781-1.656h16.875c1.188 0 1.531 0.719 0.781 1.656z"></path>
-</svg>)}
-    </button>
-    {openFrontend && (
-    <div className="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium">
-     {isFront.map((frontend) => (
-              <Link to={`/${frontend.id}/${frontend.name}`}
-                key={frontend.id}
-                className="text-gray-700 block px-4 py-2 text-md font-bold capitalize "
-                role="menuitem"
-                onClick={() => window.location.reload()}
-                tabIndex="-1">
-                {frontend.name}
-              </Link>
-            ))}
-      </div>
-    )}
-    <button className="items-center flex justify-center " onClick={toggleMenuBackend}>
-    <a href="#" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Back End</a>
-    {openBackend ? (<svg className="transform rotate-180" fill="#000000" width="20px" height="20px" viewBox="-6.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <path d="M18.813 11.406l-7.906 9.906c-0.75 0.906-1.906 0.906-2.625 0l-7.906-9.906c-0.75-0.938-0.375-1.656 0.781-1.656h16.875c1.188 0 1.531 0.719 0.781 1.656z"></path>
-    </svg>):(<svg fill="#000000" width="20px" height="20px" viewBox="-6.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <path d="M18.813 11.406l-7.906 9.906c-0.75 0.906-1.906 0.906-2.625 0l-7.906-9.906c-0.75-0.938-0.375-1.656 0.781-1.656h16.875c1.188 0 1.531 0.719 0.781 1.656z"></path>
-    </svg>)}
-    </button>
-    {openBackend && (
-      <div className="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium">
-      {isBack.map((backend) => (
-               <Link to={`/${backend.id}/${backend.name}`}
-                 key={backend.id}
-                 href="#"
-                 className="text-gray-700 block px-4 py-2 text-md font-bold capitalize "
-                 role="menuitem"
-                 tabIndex="-1">
-                 {backend.name}
-               </Link>
-             ))}
-       </div>
-    )}
-     <button className="items-center flex justify-center " onClick={toggleMenuFullstack}>
-    <a href="#" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Full Stack</a>
-    {openFullstack ? (<svg className="transform rotate-180" fill="#000000" width="20px" height="20px" viewBox="-6.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <path d="M18.813 11.406l-7.906 9.906c-0.75 0.906-1.906 0.906-2.625 0l-7.906-9.906c-0.75-0.938-0.375-1.656 0.781-1.656h16.875c1.188 0 1.531 0.719 0.781 1.656z"></path>
-    </svg>):(<svg fill="#000000" width="20px" height="20px" viewBox="-6.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <path d="M18.813 11.406l-7.906 9.906c-0.75 0.906-1.906 0.906-2.625 0l-7.906-9.906c-0.75-0.938-0.375-1.656 0.781-1.656h16.875c1.188 0 1.531 0.719 0.781 1.656z"></path>
-    </svg>)}
-    </button>
-
-    {openFullstack && (
-      <div className="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium">
-      {isFull.map((fullstack) => (
-               <Link to={`/${fullstack.id}/${fullstack.name}`}
-                 key={fullstack.id}
-                 href="#"
-                 className="text-gray-700 block px-4 py-2 text-md font-bold capitalize "
-                 role="menuitem"
-                 tabIndex="-1">
-                 {fullstack.name}
-               </Link>
-             ))}
-       </div>
-    )}
-        <div className=" items-center relative flex justify-center">
-            <span className="absolute inset-y-0 buttom-[20px] left-[368px] pl-3 flex items-center stroke-gray">
-            <svg width="27px" height="27px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path opacity="0.1" fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM11.5 7.75C9.42893 7.75 7.75 9.42893 7.75 11.5C7.75 13.5711 9.42893 15.25 11.5 15.25C13.5711 15.25 15.25 13.5711 15.25 11.5C15.25 9.42893 13.5711 7.75 11.5 7.75Z" fill="#323232"/>
-            <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#8492a6" stroke-width="2"/>
-            <path d="M14 14L16 16" stroke="#8492a6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M15 11.5C15 13.433 13.433 15 11.5 15C9.567 15 8 13.433 8 11.5C8 9.567 9.567 8 11.5 8C13.433 8 15 9.567 15 11.5Z" stroke="#8492a6" stroke-width="2"/>
-            </svg>
-            </span>
-           <input type="text" className="w-[350px] p-4 focus:outline-none bg-[#fff] h-8 rounded-full"  placeholder="Search" />
-        </div>
-  </div>
-  
-</div>
-)}
+ 
   
 </nav>
+
 { openFrontend && (
             <div
              className="hidden sm:block active absolute font-patrick overflow-hidden right-0 left-0 bg-[#374151] shadow-lg "
@@ -283,7 +202,7 @@ const Navbar = () => {
                 <img src={path} alt="" />
                 </div> 
                 ))}
-             <Link to={`/${frontend.name}/${frontend.id}`}
+             <Link to={`/${frontend.name}/${frontend.id}/${frontend.tipe_name}`}
                 key={frontend.id}
                 href="#"
                 className="text-gray-700 block py-2 text-md Capitalize"
@@ -320,7 +239,7 @@ const Navbar = () => {
                <img src={path} alt="" />
                </div> 
                ))}
-            <Link to={`/${backend.id}/${backend.name}`}
+            <Link to={`/${backend.name}/${backend.id}/${backend.tipe_name}`}
                key={backend.id}
                href="#"
                className="text-gray-700 block py-2 text-md Capitalize"
@@ -348,22 +267,22 @@ const Navbar = () => {
   >
        <div className="mx-auto max-w-7xl px-2 flex justify-start items-start sm:px-6 lg:px-8 mx-auto " style={{height:'180px'}}>
     <div className="py-1 text-white gap-2 flex flex-col" role="none">
-     {isFront.map((frontend) => (
+     {isFull.map((fullstack) => (
        <>
        <div className="flex gap-2 justify-center items-center">
 
-       {frontend.paths.map((path) =>(
+       {fullstack.paths.map((path) =>(
        <div className="p-1 bg-white text-blue shadow-lg font-normal h-7 w-7 items-center justify-center align-center rounded-full outline-none focus:outline-none">
        <img src={path} alt="" />
        </div> 
        ))}
-    <Link to={`/${frontend.id}/${frontend.name}`}
-       key={frontend.id}
+    <Link to={`/${fullstack.name}/${fullstack.id}/${fullstack.tipe_name}`}
+       key={fullstack.id}
        href="#"
        className="text-gray-700 block py-2 text-md Capitalize"
        role="menuitem"
        tabIndex="-1">
-       {frontend.name}
+       {fullstack.name}
      </Link>
        </div>
        </>
@@ -376,6 +295,111 @@ const Navbar = () => {
     )}
 
 
+{show && (
+  <div class=" sm:hidden bg-dark  absolute w-screen overflow-hidden z-[100]">
+  <div class="px-2 pb-3 flex flex-col">
+    <button className="items-center flex justify-center " onClick={toggleMenuFrontend}>
+    <a href="#" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Frontend</a>
+    {openFrontend ? (<svg className="transform rotate-180" fill="#000000" width="20px" height="20px" viewBox="-6.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+<path d="M18.813 11.406l-7.906 9.906c-0.75 0.906-1.906 0.906-2.625 0l-7.906-9.906c-0.75-0.938-0.375-1.656 0.781-1.656h16.875c1.188 0 1.531 0.719 0.781 1.656z"></path>
+</svg>):(<svg fill="#000000" width="20px" height="20px" viewBox="-6.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+
+<path d="M18.813 11.406l-7.906 9.906c-0.75 0.906-1.906 0.906-2.625 0l-7.906-9.906c-0.75-0.938-0.375-1.656 0.781-1.656h16.875c1.188 0 1.531 0.719 0.781 1.656z"></path>
+</svg>)}
+    </button>
+    {openFrontend && (
+    <div className="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium">
+     {isFront.map((frontend) => (
+              <Link to={`/${frontend.name}/${frontend.id}/${frontend.tipe_name}`}
+                key={frontend.id}
+                className="text-gray-700 block px-4 py-2 text-md font-bold capitalize "
+                role="menuitem"
+                tabIndex="-1">
+                {frontend.name}
+              </Link>
+            ))}
+      </div>
+    )}
+    <button className="items-center flex justify-center " onClick={toggleMenuBackend}>
+    <div class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Back End</div>
+    {openBackend ? (<svg className="transform rotate-180" fill="#000000" width="20px" height="20px" viewBox="-6.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18.813 11.406l-7.906 9.906c-0.75 0.906-1.906 0.906-2.625 0l-7.906-9.906c-0.75-0.938-0.375-1.656 0.781-1.656h16.875c1.188 0 1.531 0.719 0.781 1.656z"></path>
+    </svg>):(<svg fill="#000000" width="20px" height="20px" viewBox="-6.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18.813 11.406l-7.906 9.906c-0.75 0.906-1.906 0.906-2.625 0l-7.906-9.906c-0.75-0.938-0.375-1.656 0.781-1.656h16.875c1.188 0 1.531 0.719 0.781 1.656z"></path>
+    </svg>)}
+    </button>
+    {openBackend && (
+      <div className="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium">
+      {isBack.map((backend) => (
+               <Link to={`/${backend.id}/${backend.name}/${backend.tipe_name}`}
+                 key={backend.id}
+                 className="text-gray-700 block px-4 py-2 text-md font-bold capitalize "
+                 role="menuitem"
+                 tabIndex="-1">
+                 {backend.name}
+               </Link>
+             ))}
+       </div>
+    )}
+     <button className="items-center flex justify-center " onClick={toggleMenuFullstack}>
+    <a href="#" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Full Stack</a>
+    {openFullstack ? (<svg className="transform rotate-180" fill="#000000" width="20px" height="20px" viewBox="-6.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18.813 11.406l-7.906 9.906c-0.75 0.906-1.906 0.906-2.625 0l-7.906-9.906c-0.75-0.938-0.375-1.656 0.781-1.656h16.875c1.188 0 1.531 0.719 0.781 1.656z"></path>
+    </svg>):(<svg fill="#000000" width="20px" height="20px" viewBox="-6.5 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18.813 11.406l-7.906 9.906c-0.75 0.906-1.906 0.906-2.625 0l-7.906-9.906c-0.75-0.938-0.375-1.656 0.781-1.656h16.875c1.188 0 1.531 0.719 0.781 1.656z"></path>
+    </svg>)}
+    </button>
+
+    {openFullstack && (
+      <div className="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium">
+      {isFull.map((fullstack) => (
+               <Link to={`/${fullstack.id}/${fullstack.name}/${fullstack.tipe_name}`}
+                 key={fullstack.id}
+                 className="text-gray-700 block px-4 py-2 text-md font-bold capitalize "
+                 role="menuitem"
+                 tabIndex="-1">
+                 {fullstack.name}
+               </Link>
+             ))}
+       </div>
+    )}
+        <form  onSubmit={handleSubmit} className=" items-center relative flex justify-center">
+            <button className="absolute inset-y-0 buttom-[20px] right-0 pl-3 flex items-center h-auto h-auto">
+
+            <svg width="27px" height="27px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path opacity="0.1" fill-rule="evenodd" clip-rule="evenodd" d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM11.5 7.75C9.42893 7.75 7.75 9.42893 7.75 11.5C7.75 13.5711 9.42893 15.25 11.5 15.25C13.5711 15.25 15.25 13.5711 15.25 11.5C15.25 9.42893 13.5711 7.75 11.5 7.75Z" fill="#323232"/>
+            <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#8492a6" stroke-width="2"/>
+            <path d="M14 14L16 16" stroke="#8492a6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 11.5C15 13.433 13.433 15 11.5 15C9.567 15 8 13.433 8 11.5C8 9.567 9.567 8 11.5 8C13.433 8 15 9.567 15 11.5Z" stroke="#8492a6" stroke-width="2"/>
+            </svg>
+            </button>
+           <input type="text" value={searchTerm} onChange={handleChange} className="w-[350px] p-4 focus:outline-none bg-[#fff] h-8 rounded-full text-[#000000]"  placeholder="Search" />
+        </form>
+        <div className="flex justify-center items-center mt-2">
+
+        <Link to="/login"
+         onMouseEnter={handleMouseEnter}
+         onMouseLeave={handleMouseLeave}
+        className={`text-[15px] font-bold text-[#000000] bg-[#ffffff] text-dark uppercase justify-center w-[120px] justify-between px-4 h-[35px] outline-3 hover:bg-white hover:text-gray rounded-full p-1 flex items-center hover:outline-none`}>
+      
+ 
+ <svg width="26px" height="26px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <path
+     d="M15 20H18C19.1046 20 20 19.1046 20 18M15 4H18C19.1046 4 20 4.89543 20 6V14M11 16L15 12H3M11 8L12 9"
+     stroke={`${isHovered ? '#000000' : '#000000'}`}
+     strokeWidth="1.5"
+     strokeLinecap="round"
+     strokeLinejoin="round"
+   />
+ </svg>
+ Login
+        </Link>
+        </div>
+  </div>
+  
+</div>
+)}
     </>
   );
 };

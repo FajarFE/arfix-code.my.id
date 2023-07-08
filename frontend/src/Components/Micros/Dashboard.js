@@ -9,11 +9,12 @@ const Dashboard = () => {
   const [statusId, setStatusId] = useState(1);
   const [categoryId, setCategoryId] = useState(1);
   const [error, setError] = useState(null);
+  const baseURL = `${window.location.protocol}//${window.location.hostname}:8000`;
 
   const uploadArticle = async () => {
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/posts',
+        `${baseURL}/api/posts`,
         {
           title,
           content,

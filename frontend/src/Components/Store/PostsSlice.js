@@ -86,6 +86,9 @@ const postsSlice = createSlice({
     },
     setLimit: (state, action) => {
       state.limit = action.payload;
+    },
+    setData: (state, action) => {
+      state.data = action.payload;
     }
   },
   extraReducers: {
