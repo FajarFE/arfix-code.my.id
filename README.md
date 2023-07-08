@@ -1,4 +1,4 @@
-<h2><a href="https://arfix-code.my.id">ARFIX CODE</a></h2>
+<h2 class="text-center w-full"><a href="https://arfix-code.my.id">ARFIX CODE</a></h2>
 
 
 
