@@ -1,6 +1,5 @@
-###{ARFIX-CODE}
+<h2>[ARFIX-CODE](https://arfix-code.my.id)</h2>
 
- <p style="text-align: center;">Text_content</p>
 
 
 
