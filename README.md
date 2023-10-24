@@ -6,7 +6,7 @@
 ![arfix-code](https://github.com/FajarFE/ARFIX-CODE/blob/main/arfix-code.png?raw=true)
 
 
-Saya telah membuat website yang menakjubkan dengan bantuan  <a href="https://codedesign.dev/challenge/epictetus">codedesign.dev</a>.  <a href="https://codedesign.dev/challenge/epictetus">codedesign.dev</a> adalah platform yang menyediakan berbagai desain figma yang luar biasa untuk memotong (slicing) dan membangun situs web. Dengan menggunakan desain figma yang telah disediakan oleh codedesign.dev, saya dapat dengan mudah mengimplementasikannya ke dalam website saya.
+Saya telah membuat website yang menakjubkan dengan bantuan  <a href="https://codedesign.dev/challenge/epictetus">codedesign.dev</a>.  <a href="https://codedesign.dev/challenge/epictetus">codedesign.dev</a> adalah platform yang menyediakan berbagai desain figma yang luar biasa untuk (slicing) membangun situs web. Dengan menggunakan desain figma yang telah disediakan oleh codedesign.dev, saya dapat dengan mudah mengimplementasikannya ke dalam website saya.
 
 Namun, selama proses pengembangan, saya merasa ada beberapa komponen yang diperlukan untuk meningkatkan fungsionalitas dan estetika website saya. Untuk itu, saya memutuskan untuk menambahkan beberapa komponen tambahan yang tidak tersedia di <a href="https://codedesign.dev/challenge/epictetus">codedesign.dev</a> . Dengan begitu, saya dapat memberikan sentuhan personal dan unik pada website saya.
 
