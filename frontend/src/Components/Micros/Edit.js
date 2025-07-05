@@ -1,45 +1,39 @@
-import React, { useState, useEffect, useRef } from "react";
-import Hookopen from "./hookopen";
-import Add from "./Add";
-import axios from "axios";
-import JoditEditor from "jodit-react";
-import Alert from "@mui/material/Alert";
-import jwtDecode from "jwt-decode";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useRef } from 'react';
+import Hookopen from './hookopen';
+import axios from 'axios';
+import JoditEditor from 'jodit-react';
+import Alert from '@mui/material/Alert';
+import { useParams } from 'react-router-dom';
 
 const FormArtikel = () => {
-  const [title, setTitle] = useState("");
-  const [status, setStatus] = useState("");
+  const [title, setTitle] = useState('');
+  const [status, setStatus] = useState('');
   const [images, setImages] = useState([]);
-  const [previewImages, setPreviewImages] = useState([]);
-  const [message, setMessage] = useState("");
+  const [setPreviewImages] = useState([]);
+  const [message, setMessage] = useState('');
   const editor = useRef(null);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState('');
   const { id } = useParams();
   const [Tipe, setTipe] = React.useState([]);
-  const [selectedTipe, setSelectedTipe] = useState("");
+  const [selectedTipe, setSelectedTipe] = useState('');
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [originalImages, setOriginalImages] = useState([]);
   const [paths, setPaths] = useState([]);
   const baseURL = `${window.location.protocol}//${window.location.hostname}:8000`;
 
   useEffect(() => {
     const fetchPost = async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       try {
-        const response = await axios.get(
-          `${baseURL}/api/posts/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const { title, content, status_id, category_id, paths } =
-          response.data;
+        const response = await axios.get(`${baseURL}/api/posts/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const { title, content, status_id, category_id, paths } = response.data;
         setTitle(title);
         setContent(content);
         setPaths(paths); // Simpan paths data dari response
@@ -53,17 +47,16 @@ const FormArtikel = () => {
         setStatus(status_id);
         setSelectedCategory(category_id);
         setLoading(false);
-
       } catch (error) {
         console.error(error);
-        setMessage("Failed to fetch post");
+        setMessage('Failed to fetch post');
         setLoading(false);
         console.log(error.response.data);
       }
     };
 
     fetchPost();
-  }, []);
+  }, [baseURL, id, originalImages, setLoading, setPreviewImages]);
 
   const handleDrop = (event) => {
     event.preventDefault();
@@ -83,7 +76,7 @@ const FormArtikel = () => {
   const handleDragOver = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    event.dataTransfer.dropEffect = "copy";
+    event.dataTransfer.dropEffect = 'copy';
   };
   const handleRemovePreview = (index) => {
     const newImages = [...images];
@@ -94,22 +87,21 @@ const FormArtikel = () => {
     setOriginalImages(newOriginalImages);
   };
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const userToken = localStorage.getItem("token");
+    const userToken = localStorage.getItem('token');
     const formData = new FormData();
-    formData.append("title", title);
-    formData.append("content", content);
-    formData.append("category_id", selectedCategory);
-    formData.append("status_id", status);
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('category_id', selectedCategory);
+    formData.append('status_id', status);
     if (images.length === 0) {
       paths.forEach((path, index) => {
         formData.append(`images[${index}]`, path);
       });
     } else {
       images.forEach((image) => {
-        formData.append("images[]", image);
+        formData.append('images[]', image);
       });
     }
 
@@ -120,22 +112,20 @@ const FormArtikel = () => {
         {
           headers: {
             Authorization: `Bearer ${userToken}`,
-            "Content-Type": "multipart/form-data",
+            'Content-Type': 'multipart/form-data',
           },
-        }
+        },
       );
       console.log(response);
       setMessage(response.data.message);
-      console.log("sukses");
+      console.log('sukses');
     } catch (error) {
-      console.error(error); 
+      console.error(error);
       const { errors } = error.response.data;
       console.log(errors.response.data);
       setError(errors);
     }
   };
-
-  const [pesan, setPesan] = useState("");
 
   const handleDraftClick = () => {
     setStatus(1);
@@ -172,38 +162,35 @@ const FormArtikel = () => {
         setLoading(false);
       } catch (error) {
         console.error(error);
-        setError("Failed to fetch data");
+        setError('Failed to fetch data');
         setLoading(false);
       }
     }
     fetchData();
-  }, []);
+  }, [baseURL, setLoading]);
 
-  let isAlertRendered = false;
   useEffect(() => {
     async function fetchData() {
       try {
         setLoading(true);
-        const response = await axios.get(
-          `${baseURL}/api/categories`
-        );
+        const response = await axios.get(`${baseURL}/api/categories`);
         if (response.data && response.data.success && response.data.data) {
           setCategories(response.data.data);
         }
         setLoading(false);
       } catch (error) {
         console.error(error);
-        setError("Failed to fetch data");
+        setError('Failed to fetch data');
         setLoading(false);
       }
     }
     fetchData();
-  }, []);
+  }, [baseURL, setLoading]);
 
   const renderCategoryOptions = () => {
     // filter kategori berdasarkan tipe_id
     const filteredCategories = categories.filter(
-      (category) => category.tipe_id == selectedTipe
+      (category) => category.tipe_id === selectedTipe,
     );
 
     return filteredCategories.map((category) => (
@@ -212,13 +199,13 @@ const FormArtikel = () => {
       </option>
     ));
   };
-  const { isOpen, toggleMenu } = Hookopen();
+  const { isOpen } = Hookopen();
 
   return (
     <>
       <div
         className=" flex flex-col justify-start overflow-y-scroll"
-        style={{ height: "100vh", width: isOpen ? "74%" : "85%" }}
+        style={{ height: '100vh', width: isOpen ? '74%' : '85%' }}
       >
         <h2 className="text-[40px] mt-2 uppercase font-bold">EDIT ARTIKEL</h2>
         <div className="flex justify-start mx-32 my-5">
@@ -291,7 +278,7 @@ const FormArtikel = () => {
           <div className="w-[100%] flex justify-center items-center ">
             <div className="w-[80%] bg-gray-light h-[130px] rounded-t-[10px] shadow-xl">
               <label htmlFor="" className="flex flex-col w-[100%] items-center">
-                {error.title && <p>{error.title[0]}</p>}{" "}
+                {error.title && <p>{error.title[0]}</p>}{' '}
                 {/* Menampilkan pesan kesalahan untuk field title */}
                 <span className="text-left px-5 my-2 font-bold w-[100%]">
                   Judul
@@ -318,7 +305,7 @@ const FormArtikel = () => {
                 <div className="flex flex-col justify-center items-center">
                   <div
                     className="file_upload p-5 relative rounded-lg"
-                    style={{ width: "450px" }}
+                    style={{ width: '450px' }}
                   >
                     <svg
                       className="text-indigo-500 w-24 mx-auto mb-4"
@@ -360,12 +347,12 @@ const FormArtikel = () => {
                             className="flex flex-col justify-center items-center"
                             key={index}
                           >
-                            {typeof image === "string" ? (
+                            {typeof image === 'string' ? (
                               <>
                                 <img
                                   src={image}
                                   alt={`Preview ${index}`}
-                                  style={{ width: "70px" }}
+                                  style={{ width: '70px' }}
                                 />
                                 <a
                                   className="bg-purple  px-4 py-2  mt-2 text-white"
@@ -379,7 +366,7 @@ const FormArtikel = () => {
                                 <img
                                   src={URL.createObjectURL(image)}
                                   alt={`Preview ${index}`}
-                                  style={{ width: "70px" }}
+                                  style={{ width: '70px' }}
                                 />
                                 <button
                                   onClick={() => handleRemovePreview(index)}
@@ -399,7 +386,7 @@ const FormArtikel = () => {
                         <Alert key={`${key}-${index}`} severity="warning">
                           {errorMessage}
                         </Alert>
-                      ))
+                      )),
                     )}
                 </div>
               </div>
@@ -479,7 +466,7 @@ const FormArtikel = () => {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path d="M21,4a1,1,0,0,0-1-1H17V2a1,1,0,0,0-1-1H8A1,1,0,0,0,7,2V3H4A1,1,0,0,0,3,4V22a1,1,0,0,0,1,1H20a1,1,0,0,0,1-1ZM9,3h6V5H9ZM19,21H5V5H7V6A1,1,0,0,0,8,7h8a1,1,0,0,0,1-1V5h2Zm-6-3a1,1,0,0,1-1,1H8a1,1,0,0,1,0-2h4A1,1,0,0,1,13,18Zm4-4a1,1,0,0,1-1,1H8a1,1,0,0,1,0-2h8A1,1,0,0,1,17,14Zm0-4a1,1,0,0,1-1,1H8A1,1,0,0,1,8,9h8A1,1,0,0,1,17,10Z" />
-                </svg>{" "}
+                </svg>{' '}
                 Draft
               </button>
               <button
@@ -488,7 +475,7 @@ const FormArtikel = () => {
                 value={status}
                 className="bg-white h-10 w-[200px] rounded-[5px] shadow-xl flex items-center justify-center"
               >
-                {" "}
+                {' '}
                 <svg
                   width="20px"
                   height="20px"
@@ -499,7 +486,7 @@ const FormArtikel = () => {
                     fill="#000000"
                     d="M128 320v576h576V320H128zm-32-64h640a32 32 0 0 1 32 32v640a32 32 0 0 1-32 32H96a32 32 0 0 1-32-32V288a32 32 0 0 1 32-32zM960 96v704a32 32 0 0 1-32 32h-96v-64h64V128H384v64h-64V96a32 32 0 0 1 32-32h576a32 32 0 0 1 32 32zM256 672h320v64H256v-64zm0-192h320v64H256v-64z"
                   />
-                </svg>{" "}
+                </svg>{' '}
                 Archived
               </button>
               <button
@@ -508,7 +495,7 @@ const FormArtikel = () => {
                 value={status}
                 className="bg-white h-10 w-[200px] rounded-[5px] shadow-xl flex items-center justify-center"
               >
-                {" "}
+                {' '}
                 <svg
                   width="20px"
                   height="20px"
@@ -519,7 +506,7 @@ const FormArtikel = () => {
                     d="m 4 0 c -1.644531 0 -3 1.355469 -3 3 v 10 c 0 1.644531 1.355469 3 3 3 h 3 c 0.550781 0 1 -0.449219 1 -1 s -0.449219 -1 -1 -1 h -3 c -0.570312 0 -1 -0.429688 -1 -1 v -10 c 0 -0.570312 0.429688 -1 1 -1 h 5.585938 l 3.414062 3.414062 v 0.585938 c 0 0.550781 0.449219 1 1 1 s 1 -0.449219 1 -1 v -1 c 0 -0.265625 -0.105469 -0.519531 -0.292969 -0.707031 l -4 -4 c -0.1875 -0.1875 -0.441406 -0.292969 -0.707031 -0.292969 z m 7 8 v 3 h -3 v 2 h 3 v 3 h 2 v -3 h 3 v -2 h -3 v -3 z m 0 0"
                     fill="#2e3436"
                   />
-                </svg>{" "}
+                </svg>{' '}
                 Publish
               </button>
             </div>

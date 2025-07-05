@@ -5,11 +5,13 @@ const useAuth = () => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [error, setError] = useState(null);
-  const [message, setMessage] = useState(null);
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/login', { email, password });
+      const response = await axios.post('http://localhost:8000/api/login', {
+        email,
+        password,
+      });
       setUser(response.data.user);
       const tokenAuth = response.data.authorization;
       setToken(tokenAuth);
@@ -21,15 +23,18 @@ const useAuth = () => {
       setError(err.response.data.message);
     }
   };
-  
 
   const logout = async () => {
     try {
-      await axios.post('http://localhost:8000/api/logout', {}, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      await axios.post(
+        'http://localhost:8000/api/logout',
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       setUser(null);
       setToken(null);
       localStorage.removeItem('token');
@@ -40,7 +45,12 @@ const useAuth = () => {
 
   const register = async (name, email, password, passwordConfirmation) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/register', { name, email, password, password_confirmation: passwordConfirmation });
+      const response = await axios.post('http://localhost:8000/api/register', {
+        name,
+        email,
+        password,
+        password_confirmation: passwordConfirmation,
+      });
       setUser(response.data.user);
       const tokenAuth = response.data.authorization.token;
       setToken(tokenAuth);
@@ -51,20 +61,21 @@ const useAuth = () => {
   };
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/user', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-    .then(response => {
-      setUser(response.data);
-    })
-    .catch(err => {
-      console.error(err);
-    });
+    axios
+      .get('http://localhost:8000/api/user', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, [token]);
 
-  return { user, token, error, message, login, logout, register,setToken };
+  return { user, token, error, login, logout, register, setToken };
 };
 
 export default useAuth;

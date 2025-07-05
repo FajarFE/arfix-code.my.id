@@ -1,10 +1,8 @@
-import { useState, useRef, useMemo } from "react";
-import JoditEditor from "jodit-react";
-import HTMLReactParser from "html-react-parser";
-
-const Add =(props) => {
+import { useState, useRef } from 'react';
+import JoditEditor from 'jodit-react';
+const Add = (props) => {
   const editor = useRef(null);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState('');
 
   return (
     <div>
@@ -15,6 +13,6 @@ const Add =(props) => {
       />
     </div>
   );
-}
+};
 
 export default Add;

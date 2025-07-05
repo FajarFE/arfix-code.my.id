@@ -1,77 +1,86 @@
-import React, { useEffect } from "react";
-import Sidebar from "../Micros/Sidebar";
-import FormArtikel from "../Micros/FormArtikel";
-import { Outlet, useNavigate } from "react-router-dom";
-import LibraryArtikel from "../Micros/LibraryArtikel";
-import axios from "axios";
-import jwtDecode from "jwt-decode";
+// 1. Impor useCallback dan useState
+import React, { useEffect, useCallback, useState } from 'react';
+import Sidebar from '../Micros/Sidebar';
+import { Outlet, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const [user, setUser] = React.useState({});
+  const token = localStorage.getItem('token');
+  const [user, setUser] = useState({}); // Menggunakan useState, bukan React.useState
   const baseURL = `${window.location.protocol}//${window.location.hostname}:8000`;
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // Helper untuk menangani token kadaluarsa, dibungkus useCallback
+  const handleTokenExpired = useCallback(() => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  }, [navigate]); // Dependensi: navigate
 
-  const fetchData = async () => {
+  // 2. Bungkus fetchData dengan useCallback
+  const fetchData = useCallback(async () => {
+    // Jika tidak ada token, langsung redirect tanpa mencoba fetch
+    if (!token) {
+      handleTokenExpired();
+      return;
+    }
+
     try {
       const response = await axios.get(`${baseURL}/api/user`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Set header Authorization dengan token JWT
+          Authorization: `Bearer ${token}`,
         },
       });
       setUser(response.data.user);
-      console.log(response.data.user);
     } catch (error) {
       console.error(error);
       if (error.response && error.response.status === 401) {
         handleTokenExpired(); // Memproses jika token JWT kadaluarsa
       }
     }
-  };
+  }, [token, baseURL, handleTokenExpired]); // 3. Tambahkan dependensi untuk useCallback
 
-  const isTokenExpired = (token) => {
-    const decodedToken = jwtDecode(token);
-    if (decodedToken.exp * 1000 < Date.now()) {
-      return true; // Token kadaluarsa
-    }
-    return false; // Token masih berlaku
-  };
+  // 4. useEffect sekarang memiliki dependensi yang stabil dan benar
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]); // Peringatan akan hilang
 
-  const handleTokenExpired = () => {
-    localStorage.removeItem("token"); // Menghapus token dari local storage
-    navigate("/login"); // Redirect ke halaman login
-  };
+  // Bungkus handleLogout juga untuk konsistensi
+  const handleLogout = useCallback(async () => {
+    if (!token) return; // Tidak melakukan apa-apa jika sudah logout
 
-  const handleLogout = async () => {
+    // Tidak perlu lagi memanggil API untuk logout, cukup hapus token di client-side
+    // Kecuali jika backend Anda punya endpoint untuk mem-blacklist token
     try {
-      if (isTokenExpired(token)) {
-        handleTokenExpired(); // Memproses jika token JWT kadaluarsa
-      }
-
-      await axios.get(`${baseURL}/api/user`, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Set header Authorization dengan token JWT
+      // Panggilan API ini bisa jadi opsional, tergantung kebutuhan backend
+      await axios.post(
+        `${baseURL}/api/logout`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
         },
-      });
-
-      localStorage.removeItem("token");
-      window.location.reload(); // Refresh halaman setelah logout
+      );
     } catch (error) {
-      console.error(error);
+      console.error(
+        'Logout API call failed, but proceeding with client-side logout.',
+        error,
+      );
+    } finally {
+      // Selalu hapus token dan redirect
+      localStorage.removeItem('token');
+      navigate('/login');
+      // window.location.reload(); // Menggunakan navigate lebih disarankan daripada reload
     }
-  };
+  }, [token, baseURL, navigate]);
 
   return (
-    <>
-      <section className="flex justify bg-white" style={{ width: "100%", height: "100vh" }}>
-        <Sidebar user={user} token={token} logout={handleLogout} />
-        <Outlet />
-      </section>
-    </>
+    <section
+      className="flex bg-white"
+      style={{ width: '100%', height: '100vh' }}
+    >
+      <Sidebar user={user} logout={handleLogout} />
+      <Outlet context={{ user }} />{' '}
+      {/* Opsional: Melewatkan user ke child routes via context */}
+    </section>
   );
 };
 
